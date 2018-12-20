@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,22 @@
 package io.spring.start.site.extension;
 
 import io.spring.initializr.generator.ProjectRequest;
+import io.spring.initializr.metadata.Dependency;
 import org.junit.Test;
 
 /**
- * Tests for {@link SpringCloudFunctionRequestPostProcessor}.
+ * Tests for {@link SpringCloudFunctionBuildCustomizer}.
  *
  * @author Dave Syer
  * @author Stephane Nicoll
  */
-public class SpringCloudFunctionRequestPostProcessorTests
-		extends AbstractRequestPostProcessorTests {
+public class SpringCloudFunctionBuildCustomizerTests extends AbstractExtensionTests {
+
+	static final Dependency SCS_ADAPTER = Dependency.withId("cloud-function-stream",
+			"org.springframework.cloud", "spring-cloud-function-stream");
+
+	static final Dependency WEB_ADAPTER = Dependency.withId("cloud-function-web",
+			"org.springframework.cloud", "spring-cloud-function-web");
 
 	@Test
 	public void functionOnly() {
@@ -41,8 +47,7 @@ public class SpringCloudFunctionRequestPostProcessorTests
 				"cloud-function");
 		request.setBootVersion("2.0.6.RELEASE");
 		generateMavenPom(request).hasDependency(getDependency("cloud-stream"))
-				.hasDependency(getDependency("amqp"))
-				.hasDependency(SpringCloudFunctionRequestPostProcessor.SCS_ADAPTER)
+				.hasDependency(getDependency("amqp")).hasDependency(SCS_ADAPTER)
 				.hasDependenciesCount(6);
 	}
 
@@ -52,8 +57,7 @@ public class SpringCloudFunctionRequestPostProcessorTests
 				"cloud-function");
 		request.setBootVersion("2.0.6.RELEASE");
 		generateMavenPom(request).hasDependency(getDependency("reactive-cloud-stream"))
-				.hasDependency(getDependency("kafka"))
-				.hasDependency(SpringCloudFunctionRequestPostProcessor.SCS_ADAPTER)
+				.hasDependency(getDependency("kafka")).hasDependency(SCS_ADAPTER)
 				.hasDependenciesCount(7);
 	}
 
@@ -78,8 +82,7 @@ public class SpringCloudFunctionRequestPostProcessorTests
 	public void web() {
 		ProjectRequest request = createProjectRequest("web", "cloud-function");
 		generateMavenPom(request).hasDependency(getDependency("web"))
-				.hasDependency(SpringCloudFunctionRequestPostProcessor.WEB_ADAPTER)
-				.hasDependenciesCount(3);
+				.hasDependency(WEB_ADAPTER).hasDependenciesCount(3);
 	}
 
 	@Test
@@ -87,8 +90,7 @@ public class SpringCloudFunctionRequestPostProcessorTests
 		ProjectRequest request = createProjectRequest("webflux", "cloud-function");
 		request.setBootVersion("2.1.0.BUILD-SNAPSHOT");
 		generateMavenPom(request).hasDependency(getDependency("webflux"))
-				.hasDependency(SpringCloudFunctionRequestPostProcessor.WEB_ADAPTER)
-				.hasDependenciesCount(4);
+				.hasDependency(WEB_ADAPTER).hasDependenciesCount(4);
 	}
 
 	@Test

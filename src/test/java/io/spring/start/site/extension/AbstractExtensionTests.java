@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import java.util.Arrays;
 
 import io.spring.initializr.generator.ProjectGenerator;
 import io.spring.initializr.generator.ProjectRequest;
-import io.spring.initializr.generator.ProjectRequestPostProcessor;
 import io.spring.initializr.metadata.Dependency;
 import io.spring.initializr.metadata.InitializrMetadataProvider;
 import io.spring.initializr.test.generator.GradleBuildAssert;
@@ -32,13 +31,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Base test class for {@link ProjectRequestPostProcessor} implementations.
+ * Base test class for extensions.
  *
  * @author Stephane Nicoll
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public abstract class AbstractRequestPostProcessorTests {
+public abstract class AbstractExtensionTests {
 
 	@Autowired
 	private ProjectGenerator projectGenerator;

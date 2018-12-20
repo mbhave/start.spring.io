@@ -21,13 +21,12 @@ import io.spring.initializr.metadata.Dependency;
 import org.junit.Test;
 
 /**
- * Tests for {@link SpringKafkaRequestPostProcessor}.
+ * Tests for {@link SpringKafkaBuildCustomizer}.
  *
  * @author Wonwoo Lee
  * @author Stephane Nicoll
  */
-public class SpringKafkaRequestPostProcessorTests
-		extends AbstractRequestPostProcessorTests {
+public class SpringKafkaBuildCustomizerTests extends AbstractExtensionTests {
 
 	@Test
 	public void springKafkaTestIsAdded() {

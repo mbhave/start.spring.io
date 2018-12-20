@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,15 +23,12 @@ import io.spring.initializr.generator.ProjectRequest;
 import io.spring.initializr.metadata.InitializrMetadata;
 import io.spring.initializr.util.Version;
 
-import org.springframework.stereotype.Component;
-
 /**
  * Validate that the requested java version is compatible with the chosen Spring Boot
  * generation and adapt the request if necessary.
  *
  * @author Stephane Nicoll
  */
-@Component
 class JavaVersionRequestPostProcessor extends AbstractProjectRequestPostProcessor {
 
 	private static final Version VERSION_2_0_0_M1 = Version.parse("2.0.0.M1");

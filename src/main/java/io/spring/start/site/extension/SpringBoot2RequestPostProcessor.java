@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,15 +23,12 @@ import io.spring.initializr.generator.ProjectRequest;
 import io.spring.initializr.metadata.InitializrMetadata;
 import io.spring.initializr.util.Version;
 
-import org.springframework.stereotype.Component;
-
 /**
  * As of Spring Boot 2.0, Java8 is mandatory so this extension makes sure that the java
  * version is forced.
  *
  * @author Stephane Nicoll
  */
-@Component
 class SpringBoot2RequestPostProcessor extends AbstractProjectRequestPostProcessor {
 
 	private static final Version VERSION_2_0_0_M1 = Version.parse("2.0.0.M1");

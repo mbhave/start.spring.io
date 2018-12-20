@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,11 @@ import io.spring.initializr.metadata.Dependency;
 import org.junit.Test;
 
 /**
- * Tests for {@link ReactorTestRequestPostProcessor}.
+ * Tests for {@link ReactorTestBuildCustomizer}.
  *
  * @author Stephane Nicoll
  */
-public class ReactorTestRequestPostProcessorTests
-		extends AbstractRequestPostProcessorTests {
+public class ReactorTestBuildCustomizerTests extends AbstractExtensionTests {
 
 	@Test
 	public void reactorTestIsAdded() {
