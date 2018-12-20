@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package io.spring.start.site;
+package io.spring.start.site.buildcustomizers;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.scheduling.annotation.EnableAsync;
+import io.spring.initializr.generator.buildsystem.Build;
+import io.spring.initializr.generator.buildsystem.DependencyType;
+import io.spring.initializr.generator.project.build.BuildCustomizer;
 
 /**
- * Initializr website application.
+ * A {@link BuildCustomizer} that automatically adds {@code spring-security-test} when
+ * Spring Security is selected.
  *
  * @author Stephane Nicoll
+ * @author Madhura Bhave
  */
-@SpringBootApplication(scanBasePackages = { "io.spring.start.site.extension" })
-@EnableCaching
-@EnableAsync
-public class StartApplication {
+public class SpringSecurityTestBuildCustomizer implements BuildCustomizer<Build> {
 
-	public static void main(String[] args) {
-		SpringApplication.run(StartApplication.class, args);
+	@Override
+	public void customize(Build build) {
+		build.dependencies().add("security-test", "org.springframework.security",
+				"spring-security-test", null, DependencyType.TEST_COMPILE);
 	}
 
 }

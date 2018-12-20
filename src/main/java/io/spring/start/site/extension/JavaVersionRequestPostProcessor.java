@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.spring.initializr.generator.ProjectRequest;
+import io.spring.initializr.generator.ProjectRequestPostProcessor;
 import io.spring.initializr.metadata.InitializrMetadata;
 import io.spring.initializr.util.Version;
 
@@ -32,7 +33,7 @@ import org.springframework.stereotype.Component;
  * @author Stephane Nicoll
  */
 @Component
-class JavaVersionRequestPostProcessor extends AbstractProjectRequestPostProcessor {
+class JavaVersionRequestPostProcessor implements ProjectRequestPostProcessor {
 
 	private static final Version VERSION_2_0_0_M1 = Version.parse("2.0.0.M1");
 
@@ -43,9 +44,17 @@ class JavaVersionRequestPostProcessor extends AbstractProjectRequestPostProcesso
 	private static final List<String> UNSUPPORTED_LANGUAGES = Arrays.asList("groovy",
 			"kotlin");
 
+	private static final List<String> SPRING_BOOT_2_VALID_VERSIONS = Arrays.asList("1.8",
+			"9", "10", "11");
+
 	@Override
 	public void postProcessAfterResolution(ProjectRequest request,
 			InitializrMetadata metadata) {
+		if (!SPRING_BOOT_2_VALID_VERSIONS.contains(request.getJavaVersion())
+				&& isSpringBootVersionAtLeastAfter(request, VERSION_2_0_0_M1)) {
+			request.setJavaVersion("1.8");
+			return;
+		}
 		Integer javaGeneration = determineJavaGeneration(request.getJavaVersion());
 		if (javaGeneration == null) {
 			return;
@@ -77,6 +86,17 @@ class JavaVersionRequestPostProcessor extends AbstractProjectRequestPostProcesso
 		catch (NumberFormatException ex) {
 			return null;
 		}
+	}
+
+	protected boolean isSpringBootVersionBefore(ProjectRequest request, Version version) {
+		Version requestVersion = Version.safeParse(request.getBootVersion());
+		return version.compareTo(requestVersion) > 0;
+	}
+
+	boolean isSpringBootVersionAtLeastAfter(ProjectRequest request,
+			Version version) {
+		Version requestVersion = Version.safeParse(request.getBootVersion());
+		return version.compareTo(requestVersion) <= 0;
 	}
 
 }

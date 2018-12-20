@@ -14,38 +14,37 @@
  * limitations under the License.
  */
 
-package io.spring.start.site.extension;
+package io.spring.start.site.buildcustomizers;
 
 import io.spring.initializr.generator.ProjectRequest;
 import io.spring.initializr.metadata.Dependency;
 import org.junit.Test;
 
 /**
- * Tests for {@link SpringBatchTestRequestPostProcessor}.
+ * Tests for {@link SpringSecurityTestBuildCustomizer}.
  *
- * @author Tim Riemer
+ * @author Stephane Nicoll
  */
-public class SpringBatchTestRequestPostProcessorTests
-		extends AbstractRequestPostProcessorTests {
+public class SpringSecurityTestCustomizerTests extends AbstractCustomizerTests {
 
 	@Test
-	public void batchTestIsAddedWithBatch() {
-		ProjectRequest request = createProjectRequest("batch");
-		generateMavenPom(request).hasSpringBootStarterDependency("batch")
-				.hasSpringBootStarterTest().hasDependency(springBatchTest())
+	public void securityTestIsAddedWithSecurity() {
+		ProjectRequest request = createProjectRequest("security");
+		generateMavenPom(request).hasSpringBootStarterDependency("security")
+				.hasSpringBootStarterTest().hasDependency(springSecurityTest())
 				.hasDependenciesCount(3);
 	}
 
 	@Test
-	public void batchTestIsNotAddedWithoutSpringBatch() {
+	public void securityTestIsNotAddedWithoutSpringSecurity() {
 		ProjectRequest request = createProjectRequest("web");
 		generateMavenPom(request).hasSpringBootStarterDependency("web")
 				.hasSpringBootStarterTest().hasDependenciesCount(2);
 	}
 
-	private static Dependency springBatchTest() {
-		Dependency dependency = Dependency.withId("spring-batch-test",
-				"org.springframework.batch", "spring-batch-test");
+	private static Dependency springSecurityTest() {
+		Dependency dependency = Dependency.withId("spring-security-test",
+				"org.springframework.security", "spring-security-test");
 		dependency.setScope(Dependency.SCOPE_TEST);
 		return dependency;
 	}

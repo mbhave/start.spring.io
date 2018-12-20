@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.spring.start.site.extension;
+package io.spring.start.site.buildcustomizers;
 
+import java.io.File;
 import java.util.Arrays;
 
 import io.spring.initializr.generator.ProjectGenerator;
@@ -25,6 +26,7 @@ import io.spring.initializr.metadata.Dependency;
 import io.spring.initializr.metadata.InitializrMetadataProvider;
 import io.spring.initializr.test.generator.GradleBuildAssert;
 import io.spring.initializr.test.generator.PomAssert;
+import io.spring.initializr.test.generator.ProjectAssert;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public abstract class AbstractRequestPostProcessorTests {
+public abstract class AbstractCustomizerTests {
 
 	@Autowired
 	private ProjectGenerator projectGenerator;
@@ -60,6 +62,12 @@ public abstract class AbstractRequestPostProcessorTests {
 		request.setType("gradle-build");
 		String content = new String(this.projectGenerator.generateGradleBuild(request));
 		return new GradleBuildAssert(content);
+	}
+
+	private ProjectAssert getProjectAssert(ProjectRequest request, String s) {
+		request.setType(s);
+		File dir = this.projectGenerator.generateProjectStructure(request);
+		return new ProjectAssert(dir);
 	}
 
 	protected ProjectRequest createProjectRequest(String... styles) {

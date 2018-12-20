@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package io.spring.start.site.extension;
+package io.spring.start.site.buildcustomizers;
 
 import io.spring.initializr.generator.ProjectRequest;
 import io.spring.initializr.metadata.Dependency;
 import org.junit.Test;
 
 /**
- * Tests for {@link ReactorTestRequestPostProcessor}.
+ * Tests for {@link ReactorTestBuildCustomizer}.
  *
  * @author Stephane Nicoll
  */
-public class ReactorTestRequestPostProcessorTests
-		extends AbstractRequestPostProcessorTests {
+public class ReactorTestCustomizerTests extends AbstractCustomizerTests {
 
 	@Test
 	public void reactorTestIsAdded() {

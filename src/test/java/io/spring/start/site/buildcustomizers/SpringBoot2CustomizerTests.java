@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package io.spring.start.site.extension;
+package io.spring.start.site.buildcustomizers;
 
 import io.spring.initializr.generator.ProjectRequest;
 import org.junit.Test;
 
 /**
- * Tests for {@link SpringBoot2RequestPostProcessor}.
+ * Tests for Spring Boot 2.0 Java Version customization.
  *
  * @author Stephane Nicoll
  */
-public class SpringBoot2RequestPostProcessorTests
-		extends AbstractRequestPostProcessorTests {
+public class SpringBoot2CustomizerTests extends AbstractCustomizerTests {
 
 	@Test
 	public void java8IsMandatoryMaven() {

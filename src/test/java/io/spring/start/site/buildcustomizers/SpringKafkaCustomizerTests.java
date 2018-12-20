@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package io.spring.start.site.extension;
+package io.spring.start.site.buildcustomizers;
 
 import io.spring.initializr.generator.ProjectRequest;
 import io.spring.initializr.metadata.Dependency;
 import org.junit.Test;
 
 /**
- * Tests for {@link SpringKafkaRequestPostProcessor}.
+ * Tests for {@link SpringKafkaBuildCustomizer}.
  *
  * @author Wonwoo Lee
  * @author Stephane Nicoll
  */
-public class SpringKafkaRequestPostProcessorTests
-		extends AbstractRequestPostProcessorTests {
+public class SpringKafkaCustomizerTests extends AbstractCustomizerTests {
 
 	@Test
 	public void springKafkaTestIsAdded() {

@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-package io.spring.start.site.extension;
+package io.spring.start.site.buildcustomizers;
 
 import io.spring.initializr.generator.ProjectRequest;
+import io.spring.initializr.metadata.Dependency;
 import org.junit.Test;
 
 /**
- * Tests for {@link JacksonKotlinRequestPostProcessor}.
+ * Tests for {@link JacksonKotlinBuildCustomizer}.
  *
  * @author Sebastien Deleuze
  * @author Stephane Nicoll
  */
-public class JacksonKotlinRequestPostProcessorTests
-		extends AbstractRequestPostProcessorTests {
+public class JacksonKotlinBuildCustomizerTests extends AbstractCustomizerTests {
+
+	private static final Dependency JACKSON_KOTLIN = Dependency.withId(
+			"jackson-module-kotlin", "com.fasterxml.jackson.module",
+			"jackson-module-kotlin");
+
+	private static final Dependency REACTOR_TEST = Dependency.withId("reactor-test",
+			"io.projectreactor", "reactor-test", null, Dependency.SCOPE_TEST);
 
 	@Test
 	public void jacksonModuleKotlinIsAdded() {
@@ -34,9 +41,8 @@ public class JacksonKotlinRequestPostProcessorTests
 		request.setBootVersion("2.0.0.M2");
 		request.setLanguage("kotlin");
 		generateMavenPom(request).hasSpringBootStarterDependency("webflux")
-				.hasDependency(JacksonKotlinRequestPostProcessor.JACKSON_KOTLIN)
-				.hasSpringBootStarterTest()
-				.hasDependency(ReactorTestRequestPostProcessor.REACTOR_TEST)
+				.hasDependency(JACKSON_KOTLIN).hasSpringBootStarterTest()
+				.hasDependency(REACTOR_TEST)
 				.hasDependency("org.jetbrains.kotlin", "kotlin-reflect")
 				.hasDependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
 				.hasDependenciesCount(6);
@@ -47,8 +53,7 @@ public class JacksonKotlinRequestPostProcessorTests
 		ProjectRequest request = createProjectRequest("webflux");
 		request.setBootVersion("2.0.0.M2");
 		generateMavenPom(request).hasSpringBootStarterDependency("webflux")
-				.hasSpringBootStarterTest()
-				.hasDependency(ReactorTestRequestPostProcessor.REACTOR_TEST)
+				.hasSpringBootStarterTest().hasDependency(REACTOR_TEST)
 				.hasDependenciesCount(3);
 	}
 

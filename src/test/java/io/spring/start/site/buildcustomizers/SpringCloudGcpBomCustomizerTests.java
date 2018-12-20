@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package io.spring.start.site.extension;
+package io.spring.start.site.buildcustomizers;
 
 import io.spring.initializr.generator.ProjectRequest;
 import org.junit.Test;
 
 /**
- * Tests for {@link SpringCloudGcpBomRequestPostProcessor}.
+ * Tests for {@link SpringCloudGcpBomBuildCustomizer}.
  *
  * @author Stephane Nicoll
  */
-public class SpringCloudGcpBomRequestPostProcessorTests
-		extends AbstractRequestPostProcessorTests {
+public class SpringCloudGcpBomCustomizerTests extends AbstractCustomizerTests {
 
 	@Test
 	public void springCloudGcpOffReleaseTrain() {
