@@ -18,7 +18,7 @@ package io.spring.start.site.extension;
 
 import io.spring.initializr.generator.ResolvedProjectDescription;
 import io.spring.initializr.generator.buildsystem.Build;
-import io.spring.initializr.generator.buildsystem.DependencyType;
+import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.project.build.BuildCustomizer;
 import io.spring.initializr.generator.util.Version;
 
@@ -48,19 +48,19 @@ class SpringCloudFunctionBuildCustomizer implements BuildCustomizer<Build> {
 					&& isSpringBootVersionBefore()) {
 				build.dependencies().add("cloud-function-stream",
 						"org.springframework.cloud", "spring-cloud-function-stream",
-						DependencyType.COMPILE);
+						DependencyScope.COMPILE);
 				build.dependencies().filter("cloud-function");
 			}
 			if (hasDependency("web", build)) {
 				build.dependencies().add("cloud-function-web",
 						"org.springframework.cloud", "spring-cloud-function-web",
-						DependencyType.COMPILE);
+						DependencyScope.COMPILE);
 				build.dependencies().filter("cloud-function");
 			}
 			if (hasDependency("webflux", build) && isSpringBootVersionAtLeastAfter()) {
 				build.dependencies().add("cloud-function-web",
 						"org.springframework.cloud", "spring-cloud-function-web",
-						DependencyType.COMPILE);
+						DependencyScope.COMPILE);
 				build.dependencies().filter("cloud-function");
 			}
 		}

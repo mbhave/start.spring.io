@@ -18,7 +18,7 @@ package io.spring.start.site.extension;
 
 import io.spring.initializr.generator.ResolvedProjectDescription;
 import io.spring.initializr.generator.buildsystem.Build;
-import io.spring.initializr.generator.buildsystem.DependencyType;
+import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.project.build.BuildCustomizer;
 import io.spring.initializr.generator.util.Version;
 
@@ -46,12 +46,12 @@ public class SpringSessionBuildCustomizer implements BuildCustomizer<Build> {
 					|| hasDependency("data-redis-reactive", build)) {
 				build.dependencies().add("session-data-redis",
 						"org.springframework.session", "spring-session-data-redis",
-						DependencyType.COMPILE);
+						DependencyScope.COMPILE);
 				build.dependencies().filter("session");
 			}
 			if (hasDependency("jdbc", build)) {
 				build.dependencies().add("session-jdbc", "org.springframework.session",
-						"spring-session-jdbc", DependencyType.COMPILE);
+						"spring-session-jdbc", DependencyScope.COMPILE);
 				build.dependencies().filter("session");
 			}
 		}

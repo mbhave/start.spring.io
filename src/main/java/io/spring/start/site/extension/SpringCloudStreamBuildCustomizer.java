@@ -17,7 +17,7 @@
 package io.spring.start.site.extension;
 
 import io.spring.initializr.generator.buildsystem.Build;
-import io.spring.initializr.generator.buildsystem.DependencyType;
+import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.project.build.BuildCustomizer;
 
 /**
@@ -42,12 +42,12 @@ class SpringCloudStreamBuildCustomizer implements BuildCustomizer<Build> {
 			if (hasDependency("amqp", build)) {
 				build.dependencies().add("cloud-stream-binder-rabbit",
 						"org.springframework.cloud", "spring-cloud-stream-binder-rabbit",
-						DependencyType.COMPILE);
+						DependencyScope.COMPILE);
 			}
 			if (hasDependency("kafka", build)) {
 				build.dependencies().add("cloud-stream-binder-kafka",
 						"org.springframework.cloud", "spring-cloud-stream-binder-kafka",
-						DependencyType.COMPILE);
+						DependencyScope.COMPILE);
 			}
 		}
 		// Spring Cloud Stream specific
@@ -57,11 +57,11 @@ class SpringCloudStreamBuildCustomizer implements BuildCustomizer<Build> {
 				build.dependencies().add("cloud-stream-binder-kafka-streams",
 						"org.springframework.cloud",
 						"spring-cloud-stream-binder-kafka-streams",
-						DependencyType.COMPILE);
+						DependencyScope.COMPILE);
 			}
 			build.dependencies().add("cloud-stream-test", "org.springframework.cloud",
 					"spring-cloud-stream-test-support", null,
-					DependencyType.TEST_COMPILE);
+					DependencyScope.TEST_COMPILE);
 		}
 	}
 

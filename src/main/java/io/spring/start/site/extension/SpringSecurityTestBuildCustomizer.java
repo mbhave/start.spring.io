@@ -17,7 +17,7 @@
 package io.spring.start.site.extension;
 
 import io.spring.initializr.generator.buildsystem.Build;
-import io.spring.initializr.generator.buildsystem.DependencyType;
+import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.project.build.BuildCustomizer;
 
 /**
@@ -32,7 +32,7 @@ public class SpringSecurityTestBuildCustomizer implements BuildCustomizer<Build>
 	@Override
 	public void customize(Build build) {
 		build.dependencies().add("security-test", "org.springframework.security",
-				"spring-security-test", null, DependencyType.TEST_COMPILE);
+				"spring-security-test", null, DependencyScope.TEST_COMPILE);
 	}
 
 }

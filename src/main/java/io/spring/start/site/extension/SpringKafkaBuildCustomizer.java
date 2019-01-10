@@ -18,7 +18,7 @@ package io.spring.start.site.extension;
 
 import io.spring.initializr.generator.ResolvedProjectDescription;
 import io.spring.initializr.generator.buildsystem.Build;
-import io.spring.initializr.generator.buildsystem.DependencyType;
+import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.project.build.BuildCustomizer;
 import io.spring.initializr.generator.util.Version;
 import io.spring.initializr.generator.util.VersionProperty;
@@ -45,7 +45,7 @@ public class SpringKafkaBuildCustomizer implements BuildCustomizer<Build> {
 	public void customize(Build build) {
 		if (hasDependency("kafka", build)) {
 			build.dependencies().add("spring-kafka-test", "org.springframework.kafka",
-					"spring-kafka-test", null, DependencyType.TEST_COMPILE);
+					"spring-kafka-test", null, DependencyScope.TEST_COMPILE);
 			// Override to a more recent version
 			if (isSpringBootVersionBefore()) {
 				build.addVersionProperty(

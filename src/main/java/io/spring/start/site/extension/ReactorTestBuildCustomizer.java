@@ -18,7 +18,7 @@ package io.spring.start.site.extension;
 
 import io.spring.initializr.generator.ResolvedProjectDescription;
 import io.spring.initializr.generator.buildsystem.Build;
-import io.spring.initializr.generator.buildsystem.DependencyType;
+import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.project.build.BuildCustomizer;
 import io.spring.initializr.generator.util.Version;
 
@@ -43,7 +43,7 @@ public class ReactorTestBuildCustomizer implements BuildCustomizer<Build> {
 	public void customize(Build build) {
 		if (isSpringBootVersionAtLeastAfter()) {
 			build.dependencies().add("reactor-test", "io.projectreactor", "reactor-test",
-					null, DependencyType.TEST_COMPILE);
+					null, DependencyScope.TEST_COMPILE);
 		}
 	}
 
