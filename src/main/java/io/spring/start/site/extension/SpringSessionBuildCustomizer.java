@@ -18,6 +18,7 @@ package io.spring.start.site.extension;
 
 import io.spring.initializr.generator.ResolvedProjectDescription;
 import io.spring.initializr.generator.buildsystem.Build;
+import io.spring.initializr.generator.buildsystem.DependencyContainer;
 import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.project.build.BuildCustomizer;
 import io.spring.initializr.generator.util.Version;
@@ -41,28 +42,24 @@ public class SpringSessionBuildCustomizer implements BuildCustomizer<Build> {
 
 	@Override
 	public void customize(Build build) {
+		DependencyContainer dependencies = build.dependencies();
 		if (isSpringBootVersionAtLeastAfter()) {
-			if (hasDependency("data-redis", build)
-					|| hasDependency("data-redis-reactive", build)) {
-				build.dependencies().add("session-data-redis",
-						"org.springframework.session", "spring-session-data-redis",
-						DependencyScope.COMPILE);
-				build.dependencies().filter("session");
+			if (dependencies.has("data-redis")
+					|| dependencies.has("data-redis-reactive")) {
+				dependencies.add("session-data-redis", "org.springframework.session",
+						"spring-session-data-redis", DependencyScope.COMPILE);
+				dependencies.remove("session");
 			}
-			if (hasDependency("jdbc", build)) {
-				build.dependencies().add("session-jdbc", "org.springframework.session",
+			if (dependencies.has("jdbc")) {
+				dependencies.add("session-jdbc", "org.springframework.session",
 						"spring-session-jdbc", DependencyScope.COMPILE);
-				build.dependencies().filter("session");
+				dependencies.remove("session");
 			}
 		}
 	}
 
 	private boolean isSpringBootVersionAtLeastAfter() {
 		return (VERSION_2_0_0_M3.compareTo(this.description.getPlatformVersion()) <= 0);
-	}
-
-	private boolean hasDependency(String id, Build build) {
-		return build.dependencies().ids().anyMatch(i -> i.equals(id));
 	}
 
 }

@@ -18,6 +18,7 @@ package io.spring.start.site.extension;
 
 import io.spring.initializr.generator.ResolvedProjectDescription;
 import io.spring.initializr.generator.buildsystem.Build;
+import io.spring.initializr.generator.buildsystem.DependencyContainer;
 import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.project.build.BuildCustomizer;
 import io.spring.initializr.generator.util.Version;
@@ -42,32 +43,26 @@ class SpringCloudFunctionBuildCustomizer implements BuildCustomizer<Build> {
 
 	@Override
 	public void customize(Build build) {
-		if (hasDependency("cloud-function", build)) {
-			if ((hasDependency("cloud-stream", build)
-					|| hasDependency("reactive-cloud-stream", build))
-					&& isSpringBootVersionBefore()) {
-				build.dependencies().add("cloud-function-stream",
-						"org.springframework.cloud", "spring-cloud-function-stream",
-						DependencyScope.COMPILE);
-				build.dependencies().filter("cloud-function");
+		DependencyContainer dependencies = build.dependencies();
+		if (dependencies.has("cloud-function")) {
+			if ((dependencies.has("cloud-stream")
+					|| dependencies.has("reactive-cloud-stream"))
+							&& isSpringBootVersionBefore()) {
+				dependencies.add("cloud-function-stream", "org.springframework.cloud",
+						"spring-cloud-function-stream", DependencyScope.COMPILE);
+				dependencies.remove("cloud-function");
 			}
-			if (hasDependency("web", build)) {
-				build.dependencies().add("cloud-function-web",
-						"org.springframework.cloud", "spring-cloud-function-web",
-						DependencyScope.COMPILE);
-				build.dependencies().filter("cloud-function");
+			if (dependencies.has("web")) {
+				dependencies.add("cloud-function-web", "org.springframework.cloud",
+						"spring-cloud-function-web", DependencyScope.COMPILE);
+				dependencies.remove("cloud-function");
 			}
-			if (hasDependency("webflux", build) && isSpringBootVersionAtLeastAfter()) {
-				build.dependencies().add("cloud-function-web",
-						"org.springframework.cloud", "spring-cloud-function-web",
-						DependencyScope.COMPILE);
-				build.dependencies().filter("cloud-function");
+			if (dependencies.has("webflux") && isSpringBootVersionAtLeastAfter()) {
+				dependencies.add("cloud-function-web", "org.springframework.cloud",
+						"spring-cloud-function-web", DependencyScope.COMPILE);
+				dependencies.remove("cloud-function");
 			}
 		}
-	}
-
-	private boolean hasDependency(String id, Build build) {
-		return build.dependencies().ids().anyMatch(i -> i.equals(id));
 	}
 
 	private boolean isSpringBootVersionAtLeastAfter() {
