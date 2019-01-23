@@ -20,11 +20,11 @@ import io.spring.initializr.generator.ProjectRequest;
 import org.junit.Test;
 
 /**
- * Tests for {@link JavaVersionRequestPostProcessor}.
+ * Tests for {@link JavaVersionProjectDescriptionCustomizer}.
  *
  * @author Stephane Nicoll
  */
-public class JavaVersionRequestPostProcessorTests extends AbstractExtensionTests {
+public class JavaVersionProjectDescriptionCustomizerTests extends AbstractExtensionTests {
 
 	@Test
 	public void java9CannotBeUsedWithSpringBoot1Maven() {

@@ -30,14 +30,13 @@ import org.springframework.context.annotation.Configuration;
 public class ProjectRequestPostProcessorConfiguration {
 
 	@Bean
-	public JavaVersionRequestPostProcessor javaVersionRequestPostProcessor() {
-		return new JavaVersionRequestPostProcessor();
+	public JavaVersionProjectDescriptionCustomizer javaVersionProjectDescriptionCustomizer() {
+		return new JavaVersionProjectDescriptionCustomizer();
 	}
 
 	@Bean
-	public SpringBoot2RequestPostProcessor springBoot2RequestPostProcessor() {
-		return new SpringBoot2RequestPostProcessor();
+	public SpringBoot2ProjectDescriptionCustomizer springBoot2RequestPostProcessor() {
+		return new SpringBoot2ProjectDescriptionCustomizer();
 	}
 
 }
-

@@ -24,7 +24,7 @@ import org.junit.Test;
  *
  * @author Stephane Nicoll
  */
-public class SpringBoot2RequestPostProcessorTests extends AbstractExtensionTests {
+public class SpringBoot2ProjectDescriptionCustomizerTests extends AbstractExtensionTests {
 
 	@Test
 	public void java8IsMandatoryMaven() {

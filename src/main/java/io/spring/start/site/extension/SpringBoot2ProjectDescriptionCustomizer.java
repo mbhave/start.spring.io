@@ -19,17 +19,18 @@ package io.spring.start.site.extension;
 import java.util.Arrays;
 import java.util.List;
 
-import io.spring.initializr.generator.ProjectRequest;
-import io.spring.initializr.metadata.InitializrMetadata;
-import io.spring.initializr.util.Version;
+import io.spring.initializr.generator.ProjectDescription;
+import io.spring.initializr.generator.ProjectDescriptionCustomizer;
+import io.spring.initializr.generator.util.Version;
 
 /**
  * As of Spring Boot 2.0, Java8 is mandatory so this extension makes sure that the java
  * version is forced.
  *
  * @author Stephane Nicoll
+ * @author Madhura Bhave
  */
-class SpringBoot2RequestPostProcessor extends AbstractProjectRequestPostProcessor {
+class SpringBoot2ProjectDescriptionCustomizer implements ProjectDescriptionCustomizer {
 
 	private static final Version VERSION_2_0_0_M1 = Version.parse("2.0.0.M1");
 
@@ -37,12 +38,15 @@ class SpringBoot2RequestPostProcessor extends AbstractProjectRequestPostProcesso
 			"11");
 
 	@Override
-	public void postProcessAfterResolution(ProjectRequest request,
-			InitializrMetadata metadata) {
-		if (!VALID_VERSIONS.contains(request.getJavaVersion())
-				&& isSpringBootVersionAtLeastAfter(request, VERSION_2_0_0_M1)) {
-			request.setJavaVersion("1.8");
+	public void customize(ProjectDescription description) {
+		if (!VALID_VERSIONS.contains(description.getJavaVersion())
+				&& isSpringBootVersionAtLeastAfter(description)) {
+			description.setJavaVersion("1.8");
 		}
+	}
+
+	private boolean isSpringBootVersionAtLeastAfter(ProjectDescription description) {
+		return (VERSION_2_0_0_M1.compareTo(description.getPlatformVersion()) <= 0);
 	}
 
 }
