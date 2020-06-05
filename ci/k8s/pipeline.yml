@@ -1,0 +1,120 @@
+---
+resource_types:
+- name: kpack-image
+  type: registry-image
+  source:
+    repository: gcr.io/cf-build-service-public/concourse-kpack-resource
+- name: artifactory-resource
+  type: docker-image
+  source:
+    repository: springio/artifactory-resource
+    tag: 0.0.13-SNAPSHOT
+resources:
+- name: kpack
+  type: kpack-image
+  source:
+    image: "initializr-k8s-image"
+    namespace: "spring-initializr"
+    gke:
+      json_key: ((kpack-resource-account-key))
+      kubeconfig: ((shipyard-kubeconfig))
+- name: git-repo
+  type: git
+  icon: github-circle
+  source:
+    uri: ((github-repo))
+    username: ((github-username))
+    password: ((github-password))
+    branch: ((branch))
+- name: build-project-git-repo
+  type: git
+  icon: github-circle
+  source:
+    uri: ((github-repo))
+    branch: ((branch))
+    ignore_paths: ["ci/k8s/config/deployment.yml"]
+- name: deploy-git-repo
+  type: git
+  icon: github-circle
+  source:
+    uri: ((github-repo))
+    branch: ((branch))
+    paths: ["ci/k8s/config/deployment.yml"]
+- name: artifactory-repo
+  type: artifactory-resource
+  icon: package-variant
+  source:
+    uri: ((artifactory-server))
+    username: ((artifactory-username))
+    password: ((artifactory-password))
+    build_name: ((build-name))
+- name: test-start-image
+  type: docker-image
+  source:
+    repository: mbhave/test-start-image
+jobs:
+- name: build-project
+  plan:
+    - get: git-repo
+      resource: build-project-git-repo
+      trigger: true
+    - get: test-start-image
+    - task: build
+      image: test-start-image
+      file: git-repo/ci/k8s/tasks/build-service.yml
+    - put: artifactory-repo
+      params:
+        repo: ((artifactory-repo))
+        folder: distribution-repository
+        build_uri: "https://ci.spring.io/teams/${BUILD_TEAM_NAME}/pipelines/${BUILD_PIPELINE_NAME}/jobs/${BUILD_JOB_NAME}/builds/${BUILD_NAME}"
+        build_number: "${BUILD_PIPELINE_NAME}-${BUILD_JOB_NAME}-${BUILD_NAME}"
+        disable_checksum_uploads: true
+- name: update-image
+  plan:
+    - get: git-repo
+    - get: test-start-image
+    - get: artifactory-repo
+      trigger: true
+    - task: get-blob-url
+      image: test-start-image
+      file: git-repo/ci/k8s/tasks/get-blob-url.yml
+      params:
+        ARTIFACTORY_SERVER: ((artifactory-server))
+        ARTIFACTORY_REPO: ((artifactory-repo))
+    - put: kpack
+      params:
+        blob_url_file: blob-url/url
+- name: update-deployment
+  plan:
+    - get: git-repo
+    - get: kpack
+      trigger: true
+    - get: test-start-image
+    - task: update-deployment
+      image: test-start-image
+      file: git-repo/ci/k8s/tasks/update-deployment.yml
+    - put: git-repo
+      params:
+       repository: updated-git-repo
+- name: deploy
+  plan:
+  - get: deploy-git-repo
+    trigger: true
+  - get: test-start-image
+  - get: git-repo
+  - task: deploy
+    image: test-start-image
+    file: git-repo/ci/k8s/tasks/deploy.yml
+    params:
+      KEY: ((developer-account-key))
+      ELASTIC_URI: a
+groups:
+  - name: "Build"
+    jobs: ["build-project"]
+  - name: "Update Image"
+    jobs: ["update-image"]
+  - name: "Update Deployment"
+    jobs: ["update-deployment"]
+  - name: "Deploy"
+    jobs: ["deploy"]
+
